@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.List;
 
-
+@Repository
 public interface AccountRepository extends CrudRepository<Account,Long> {
-    Account findAccountByAccountName(String accountName);
+
+
 }

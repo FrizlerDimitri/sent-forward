@@ -12,6 +12,17 @@ public class Account implements Serializable {
     private Long accountId;
 
 
+
+    public Account(){
+
+    }
+
+    public Account(Long accountId, String accountName, String accountPw) {
+        this.accountId = accountId;
+        this.accountName = accountName;
+        this.accountPw = accountPw;
+    }
+
     @Column(name = "account_name", nullable = false)
     private String accountName;
 
@@ -47,4 +58,12 @@ public class Account implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        return "Account {" +
+                "accountId=" + accountId +
+                ", accountName='" + accountName+
+                ", accountPw='" + accountPw +
+                '}';
+    }
 }
