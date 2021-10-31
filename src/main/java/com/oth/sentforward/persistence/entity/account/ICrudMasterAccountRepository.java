@@ -1,0 +1,10 @@
+package com.oth.sentforward.persistence.entity.account;
+
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ICrudMasterAccountRepository extends ICrudAccountRepository <MasterAccount, Long >  {
+
+}
