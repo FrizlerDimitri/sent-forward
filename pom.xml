@@ -9,12 +9,12 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.oth</groupId>
-	<artifactId>sent-forward-persistence </artifactId>
+	<artifactId>sent-forward</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sent-forward-persistence </name>
+	<name>sent-forward </name>
 	<description>Project for  the OTH Regensburg for Software Development </description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>16</java.version>
 		<maven.compiler.source>16</maven.compiler.source>
 		<maven.compiler.target>16</maven.compiler.target>
 	</properties>
