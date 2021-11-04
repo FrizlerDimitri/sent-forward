@@ -8,13 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 public class MasterAccount extends AbstractEntity<Long> implements IAccount {
 
 
-    @Column(nullable = false)
+    @Column(unique = true,nullable = false)
     private String name;
 
     @Column(name = "pw", nullable = false)
@@ -25,7 +26,7 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount {
     private UserEntity user;
 
     @OneToMany
-    Collection<EmailAccount> emailAccounts;
+    Collection<EmailAccount> emailAccounts= new ArrayList<EmailAccount>();
 
 
     public MasterAccount(String name, String password, UserEntity user, Collection<EmailAccount> emailAccounts) {
@@ -35,6 +36,11 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount {
         this.emailAccounts = emailAccounts;
     }
 
+    public MasterAccount(String name, String password, UserEntity user) {
+        this.name = name;
+        this.password = password;
+        this.user = user;
+    }
 
     //TODO Constructor for testing
     public MasterAccount(String name, String password) {

@@ -15,7 +15,7 @@ import java.util.Collection;
 @Entity
 public class EmailAccount extends AbstractEntity<Long> implements IAccount {
 
-    @Column(nullable = false)
+    @Column(unique = true,nullable = false)
     private String emailAddress;
 
     @Column(name = "pw",nullable = false)
@@ -51,6 +51,14 @@ public class EmailAccount extends AbstractEntity<Long> implements IAccount {
         this.emailPw = emailPw;
         this.domain = domain;
         this.port = port;
+    }
+
+    public EmailAccount(String emailAddress, String emailPw, String domain, int port, MasterAccount masterAccount) {
+        this.emailAddress = emailAddress;
+        this.emailPw = emailPw;
+        this.domain = domain;
+        this.port = port;
+        this.masterAccount=masterAccount;
     }
 
 
