@@ -1,13 +1,14 @@
 package com.oth.sentforward.bussnislogic.services;
 
-import com.oth.sentforward.persistence.entity.account.*;
-import com.oth.sentforward.persistence.entity.userentity.Address;
-import com.oth.sentforward.persistence.entity.userentity.IUserRepository;
-import com.oth.sentforward.persistence.entity.userentity.UserEntity;
+import com.oth.sentforward.bussnislogic.iservices.IAccountService;
+import com.oth.sentforward.persistence.entities.MasterAccount;
+import com.oth.sentforward.persistence.entities.UserEntity;
+import com.oth.sentforward.persistence.repositories.IEmailAccountRepository;
+import com.oth.sentforward.persistence.repositories.IMasterAccountRepository;
+import com.oth.sentforward.persistence.repositories.IUserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -20,83 +21,53 @@ public class AccountService implements IAccountService {
     private IEmailAccountRepository emailAccountRepository;
 
     @Autowired
-    private IUserRepository userRepository;
+    private IUserEntityRepository userEntityRepository;
 
-
-    AccountService(IMasterAccountRepository masterAccountRepository, IEmailAccountRepository emailAccountRepository,
-                   IUserRepository userRepository) {
+    public AccountService(IMasterAccountRepository masterAccountRepository, IEmailAccountRepository emailAccountRepository, IUserEntityRepository userEntityRepository) {
         this.masterAccountRepository = masterAccountRepository;
         this.emailAccountRepository = emailAccountRepository;
-        this.userRepository = userRepository;
+        this.userEntityRepository = userEntityRepository;
     }
 
-    public Collection<MasterAccount> getAllMasterAccounts() {
-        return (Collection<MasterAccount>) masterAccountRepository.findAll();
-    }
-
-    public Collection<EmailAccount> getAllEmailAccounts() {
-        return (Collection<EmailAccount>) emailAccountRepository.findAll();
-    }
-
-
-    //Todo create a real Exection ???
-    //Throw Exception if accountName is not unique
+    //TODO Exceptions
     @Override
-    public void createMasterAccount(String userName, String userLastName, Address address,
-                                    String accountName, String password
-    ) throws Exception {
+    public Optional<MasterAccount> createMasterAccount(MasterAccount masterAccount) {
 
-        UserEntity user = new UserEntity(userName, userLastName, address);
-        userRepository.save(user);
+        System.out.println("In create Master Account !");
 
-        MasterAccount account = new MasterAccount(accountName, password, user);
-        masterAccountRepository.save(account);
-        user.setMasterAccount(account);
+        if (isMasterAccountNameInUse(masterAccount)) {
+            return Optional.empty();
+        }
 
-        userRepository.save(user);
+
+        Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.save(masterAccount));
+
+//        UserEntity user = masterAccount.getUser();
+//        userEntityRepository.saveAndFlush(user);
+//        user.setMasterAccount(masterAccount);
+//        Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.saveAndFlush(masterAccount));
+//        userEntityRepository.saveAndFlush(masterAccount.getUser());
+
+        return optionalMasterAccount;
     }
 
 
-    //Throw Exception if emailAddress is not unique
-    @Override
-    public void createEmailAccount(String emailAddress, String emailPw, String domain,
-                                   int port, MasterAccount masterAccount) throws Exception {
-        EmailAccount emailAccount = new EmailAccount(emailAddress, emailPw, domain, port, masterAccount);
-        emailAccountRepository.save(emailAccount);
-        masterAccount.getEmailAccounts().add(emailAccount);
-        masterAccountRepository.save(masterAccount);
+    private boolean isMasterAccountNameInUse(MasterAccount masterAccount) {
 
-    }
+        String accountName = masterAccount.getAccountName();
 
+        Optional<MasterAccount> optionalMasterAccount = masterAccountRepository.findMasterAccountByAccountName(accountName);
+        masterAccountRepository.flush();
+        //optionalMasterAccount.ifPresent(acc -> System.out.println(acc));
 
-    @Override
-    public boolean logginIntoAccount(String nameOrEmail, String pw) {
+        optionalMasterAccount.ifPresent(acc -> System.out.println(acc));
 
-
-
-        Optional<MasterAccount> master = masterAccountRepository.findByName(nameOrEmail);
-        Optional<EmailAccount> emailAccount = emailAccountRepository.findByEmailAddress(nameOrEmail);
-
-        EmailAccount acc = new EmailAccount();
-
-        if (master.isPresent()) {
-            MasterAccount account = master.get();
-            if (account.getPassword().equals(pw)) {
-                return true;
-            }
-
-            return false;
-        } else if (emailAccount.isPresent()) {
-            EmailAccount account = emailAccount.get();
-            if (account.getEmailPw().equals(pw)) {
-                return true;
-            }
-
-            return false;
-        } else {
+        if (optionalMasterAccount.isEmpty()) {
 
             return false;
         }
+
+        return true;
     }
 
 
