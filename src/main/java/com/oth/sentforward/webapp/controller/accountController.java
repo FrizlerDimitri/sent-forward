@@ -1,19 +1,17 @@
 package com.oth.sentforward.webapp.controller;
 
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@Scope("session")
-public class TestController {
+public class accountController {
 
-
-    @RequestMapping(value="/")
-    public String test()
+    @RequestMapping(value="/account")
+    public String account()
     {
-        return "starter";
+        return "account";
     }
 
 }

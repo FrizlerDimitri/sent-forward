@@ -7,12 +7,21 @@ import com.oth.sentforward.persistence.repositories.IEmailAccountRepository;
 import com.oth.sentforward.persistence.repositories.IMasterAccountRepository;
 import com.oth.sentforward.persistence.repositories.IUserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
-public class AccountService implements IAccountService {
+public class AccountService implements IAccountService, UserDetailsService {
+
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private IMasterAccountRepository masterAccountRepository;
@@ -22,6 +31,7 @@ public class AccountService implements IAccountService {
 
     @Autowired
     private IUserEntityRepository userEntityRepository;
+
 
     public AccountService(IMasterAccountRepository masterAccountRepository, IEmailAccountRepository emailAccountRepository, IUserEntityRepository userEntityRepository) {
         this.masterAccountRepository = masterAccountRepository;
@@ -33,42 +43,29 @@ public class AccountService implements IAccountService {
     @Override
     public Optional<MasterAccount> createMasterAccount(MasterAccount masterAccount) {
 
-        System.out.println("In create Master Account !");
 
-        if (isMasterAccountNameInUse(masterAccount)) {
-            return Optional.empty();
-        }
-
-
+        masterAccount.setPassword(passwordEncoder.encode(masterAccount.getPassword()));
         Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.save(masterAccount));
-
-//        UserEntity user = masterAccount.getUser();
-//        userEntityRepository.saveAndFlush(user);
-//        user.setMasterAccount(masterAccount);
-//        Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.saveAndFlush(masterAccount));
-//        userEntityRepository.saveAndFlush(masterAccount.getUser());
 
         return optionalMasterAccount;
     }
 
 
-    private boolean isMasterAccountNameInUse(MasterAccount masterAccount) {
-
-        String accountName = masterAccount.getAccountName();
-
-        Optional<MasterAccount> optionalMasterAccount = masterAccountRepository.findMasterAccountByAccountName(accountName);
-        masterAccountRepository.flush();
-        //optionalMasterAccount.ifPresent(acc -> System.out.println(acc));
-
-        optionalMasterAccount.ifPresent(acc -> System.out.println(acc));
-
-        if (optionalMasterAccount.isEmpty()) {
-
-            return false;
-        }
-
-        return true;
+    private Optional<MasterAccount> loadMasterAccountUserByUsername(String accountName) {
+        return masterAccountRepository.findMasterAccountByAccountName(accountName);
     }
 
+    //TODO same for EmailAccount
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        Optional<MasterAccount> optionalMasterAccount = loadMasterAccountUserByUsername(username);
+
+        optionalMasterAccount.orElseThrow(() -> {
+            throw new UsernameNotFoundException("User with username = " + username +" not found");
+        });
+
+        return optionalMasterAccount.get();
+    }
 }

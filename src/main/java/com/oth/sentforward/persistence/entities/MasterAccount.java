@@ -1,12 +1,19 @@
 package com.oth.sentforward.persistence.entities;
 
 import com.oth.sentforward.persistence.AbstractEntity;
+import com.oth.sentforward.security.Authority;
+import com.oth.sentforward.security.EnumAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class MasterAccount extends AbstractEntity<Long> implements IAccount {
+public class MasterAccount extends AbstractEntity<Long> implements IAccount  , UserDetails {
 
 
     @Column(unique = true, nullable = false)
@@ -20,7 +27,7 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount {
     private UserEntity user;
 
     @OneToMany
-    private Collection<EmailAccount> emailAccounts;
+    private Collection<EmailAccount> emailAccounts= new ArrayList<>();
 
     public MasterAccount() {
     }
@@ -38,6 +45,7 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount {
         this.emailAccounts = emailAccounts;
     }
 
+
     public String getAccountName() {
         return accountName;
     }
@@ -46,8 +54,48 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount {
         this.accountName = accountName;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+
+        //TODO TODO right implementation
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        authorities.add( new Authority(EnumAuthority.MASTER_ACCOUNT_CREATE.toString()));
+        authorities.add( new Authority(EnumAuthority.MASTER_ACCOUNT_READ.toString()));
+        authorities.add( new Authority(EnumAuthority.MASTER_ACCOUNT_DELETE.toString()));
+        authorities.add( new Authority(EnumAuthority.MASTER_ACCOUNT_WRITE.toString()));
+
+        return authorities;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return accountName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

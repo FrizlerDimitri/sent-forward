@@ -29,17 +29,9 @@ public class RegisterController {
     @RequestMapping(value = "register")
     public String register(Model model) {
 
-
-
         model.addAttribute("registerForm", new RegisterForm());
-
-//        UserEntity user = new UserEntity();
-//        MasterAccount masterAccount = new MasterAccount();
-
-        //model.addAttribute("user",user);
-        //model.addAttribute("masterAccount", masterAccount);
-
         return "register-account";
+
     }
 
 
