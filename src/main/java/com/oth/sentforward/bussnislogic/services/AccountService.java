@@ -43,7 +43,6 @@ public class AccountService implements IAccountService, UserDetailsService {
     @Override
     public Optional<MasterAccount> createMasterAccount(MasterAccount masterAccount) {
 
-
         masterAccount.setPassword(passwordEncoder.encode(masterAccount.getPassword()));
         Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.save(masterAccount));
 
@@ -56,14 +55,13 @@ public class AccountService implements IAccountService, UserDetailsService {
     }
 
     //TODO same for EmailAccount
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<MasterAccount> optionalMasterAccount = loadMasterAccountUserByUsername(username);
 
         optionalMasterAccount.orElseThrow(() -> {
-            throw new UsernameNotFoundException("User with username = " + username +" not found");
+            throw new UsernameNotFoundException("User with username = " + username + " not found");
         });
 
         return optionalMasterAccount.get();
