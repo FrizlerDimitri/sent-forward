@@ -9,8 +9,8 @@ import java.util.Date;
 public class SavedEmail extends AbstractEmail {
 
     private Date savedDate;
-    private Date lastModified;
 
+    private Date lastModified;
 
     public SavedEmail() {
 

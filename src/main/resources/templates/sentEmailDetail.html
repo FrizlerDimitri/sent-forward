@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div th:replace="/basic/basic-fragments :: stylesheets"></div>
+    <div th:replace="/basic/basic-fragments :: sidebar-stylesheet"></div>
+
+    <div th:replace="/basic/basic-fragments :: scripts"></div>
+
+    <title>Account</title>
+</head>
+<body>
+
+<div id="body-pd">
+    <div th:replace="basic/account-layout :: sidebar"></div>
+
+
+    <div class="account-content">
+
+        <div class="from-sent-email" th:text="'From : '+${email.getFrom().getEmailAddress()} "></div>
+        <div class="date-sent-email" th:text="'Date : '+${sdf.format(email.getSentDate())} "></div>
+        <div class="to-sent-email" th:text="'To : '+${toList}"></div>
+        <div class="content-sent-email">
+            <p th:text="${email.getContent()}">
+
+            </p>
+            </div>
+        </div>
+
+</div>
+
+
+
+</body>
+
+
+</html>

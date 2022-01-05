@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface IMasterAccountRepository extends JpaRepository<MasterAccount, Long> {
 
-
-
     Optional<MasterAccount> findMasterAccountByAccountName(String accountName);
 
 }

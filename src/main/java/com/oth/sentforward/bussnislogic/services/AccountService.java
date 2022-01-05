@@ -1,8 +1,8 @@
 package com.oth.sentforward.bussnislogic.services;
 
 import com.oth.sentforward.bussnislogic.iservices.IAccountService;
+import com.oth.sentforward.persistence.entities.EmailAccount;
 import com.oth.sentforward.persistence.entities.MasterAccount;
-import com.oth.sentforward.persistence.entities.UserEntity;
 import com.oth.sentforward.persistence.repositories.IEmailAccountRepository;
 import com.oth.sentforward.persistence.repositories.IMasterAccountRepository;
 import com.oth.sentforward.persistence.repositories.IUserEntityRepository;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @Service
 public class AccountService implements IAccountService, UserDetailsService {
@@ -32,7 +31,6 @@ public class AccountService implements IAccountService, UserDetailsService {
     @Autowired
     private IUserEntityRepository userEntityRepository;
 
-
     public AccountService(IMasterAccountRepository masterAccountRepository, IEmailAccountRepository emailAccountRepository, IUserEntityRepository userEntityRepository) {
         this.masterAccountRepository = masterAccountRepository;
         this.emailAccountRepository = emailAccountRepository;
@@ -45,25 +43,55 @@ public class AccountService implements IAccountService, UserDetailsService {
 
         masterAccount.setPassword(passwordEncoder.encode(masterAccount.getPassword()));
         Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.save(masterAccount));
-
         return optionalMasterAccount;
     }
 
 
-    private Optional<MasterAccount> loadMasterAccountUserByUsername(String accountName) {
+    @Override
+    public Optional<MasterAccount> updateMasterAccount(MasterAccount masterAccount) {
+        Optional<MasterAccount> optionalMasterAccount = Optional.of(masterAccountRepository.save(masterAccount));
+        return optionalMasterAccount;
+    }
+
+    @Override
+    public Optional<EmailAccount> createEmailAccount(EmailAccount emailAccount) {
+
+        Optional<EmailAccount> optionalMasterAccount = Optional.of(emailAccountRepository.save(emailAccount));
+
+        return optionalMasterAccount;
+    }
+
+    @Override
+    public Optional<EmailAccount> loadEmailAccount(EmailAccount emailAccount) {
+
+        return emailAccountRepository.findEmailAccountById(emailAccount.getId());
+    }
+
+    @Override
+    public Optional<MasterAccount> getMasterAccountByAccountname(String accountName) {
+
         return masterAccountRepository.findMasterAccountByAccountName(accountName);
     }
 
-    //TODO same for EmailAccount
+    @Override
+    public Optional<EmailAccount> getEmailAccountByEmailAddress(String emailAddress) {
+        return emailAccountRepository.findEmailAccountByEmailAddress(emailAddress);
+    }
+
+
+    public Optional<MasterAccount> loadMasterAccountUserByUsername(String accountName) {
+        return masterAccountRepository.findMasterAccountByAccountName(accountName);
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<MasterAccount> optionalMasterAccount = loadMasterAccountUserByUsername(username);
 
         optionalMasterAccount.orElseThrow(() -> {
-            throw new UsernameNotFoundException("User with username = " + username + " not found");
+            throw new UsernameNotFoundException("user with username = " + username + " not found");
         });
-
         return optionalMasterAccount.get();
     }
 }

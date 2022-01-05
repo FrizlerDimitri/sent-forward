@@ -29,7 +29,7 @@ public class ReceivedEmail extends AbstractEmail{
         this.receivedDate = receivedDate;
     }
 
-    public boolean isWasRead() {
+    public boolean wasRead() {
         return wasRead;
     }
 

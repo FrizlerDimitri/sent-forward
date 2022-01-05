@@ -25,7 +25,6 @@ public class Appointment extends AbstractEntity<Long> {
 
     private boolean isFulltime;
 
-
     @ElementCollection
     private Collection<String> participants;
 
@@ -89,7 +88,6 @@ public class Appointment extends AbstractEntity<Long> {
     public void setFulltime(boolean fulltime) {
         isFulltime = fulltime;
     }
-
 
     public Collection<String> getParticipants() {
         return participants;

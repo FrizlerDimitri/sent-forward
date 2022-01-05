@@ -42,8 +42,6 @@ public class RegisterController {
             ) throws Exception {
 
 
-        System.out.println(registerForm);
-
         String accountName = registerForm.getAccountName();
         String pw=registerForm.getPassword();
         String pwConfirm=registerForm.getPasswordConfirm();
@@ -54,7 +52,7 @@ public class RegisterController {
             throw new Exception("passwords are different");
         }
 
-        //create User
+        //create user
         String country=registerForm.getCountry();
         String street=registerForm.getStreet();
         String town=registerForm.getTown();
@@ -66,7 +64,7 @@ public class RegisterController {
 
         UserEntity user = new UserEntity(lastName,name,address);
 
-        //create MasterAccount
+        //create masterAccount
         MasterAccount masterAccount = new MasterAccount(accountName, pw, user);
         accountService.createMasterAccount(masterAccount);
 

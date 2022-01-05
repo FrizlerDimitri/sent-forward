@@ -1,10 +1,16 @@
 package com.oth.sentforward.persistence.repositories;
 
 import com.oth.sentforward.persistence.entities.AbstractEmail;
-import com.oth.sentforward.persistence.entities.UserEntity;
+import com.oth.sentforward.persistence.entities.SentEmail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface IEmailRepository extends JpaRepository<AbstractEmail, Long> {
+public interface ISentEmailRepository extends JpaRepository<SentEmail, Long> {
+
+    @Override
+    Optional<SentEmail> findById(Long id);
+
 }

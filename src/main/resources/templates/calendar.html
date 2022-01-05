@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div th:replace="basic/basic-fragments :: stylesheets"></div>
+    <div th:replace="/basic/basic-fragments :: sidebar-stylesheet"></div>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/evo-calendar.css}">
+
+    <div th:replace="basic/basic-fragments :: scripts"></div>
+
+
+<!--    calendar-->
+
+
+
+
+    <title>Title</title>
+</head>
+<body>
+<div id="body-pd">
+    <div th:replace="basic/account-layout :: sidebar"></div>
+    <!--    content-->
+    <div class="account-content bg-light">
+        <div class="space-top-bar" >
+            <div  class="calendar-max-width bg-light" id='evoCalendar'></div>
+        </div>
+
+    </div>
+
+</div>
+
+    <script type="text/javascript" th:src="@{/js/evo-calendar.js}"></script>
+    <script>
+
+        $(document).ready(function() {
+            $('#evoCalendar').evoCalendar({
+
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{basic/account-layout}"
+
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div th:replace="/basic/basic-fragments :: stylesheets"></div>
+    <div th:replace="/basic/basic-fragments :: sidebar-stylesheet"></div>
+
+    <div th:replace="/basic/basic-fragments :: scripts"></div>
+
+    <title>Account</title>
+</head>
+<body>
+
+<div id="body-pd">
+    <div th:replace="basic/account-layout :: sidebar"></div>
+    <div class="account-content">
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">From</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="sentEmail : ${emailAccount.getSentEmails()}">
+
+                <tr th:onclick="'tableClick('+ ${sentEmail.getId()} +')'">
+                    <td th:text="${sentEmail.getFrom().getMasterAccount().getUsername()}"></td>
+                    <td th:text="${sentEmail.getSubject()}"></td>
+                    <td th:text="${sdf.format(sentEmail.getSentDate())}"></td>
+                </tr>
+
+            </th:block>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+<script>
+
+    function tableClick(mailId) {
+        window.location.href = "email/"+mailId
+    };
+
+</script>
+
+</body>
+
+
+</html>

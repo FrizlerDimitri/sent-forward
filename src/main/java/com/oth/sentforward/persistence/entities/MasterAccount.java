@@ -26,7 +26,7 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount  , U
     @JoinColumn(name ="user_id", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany
+    @OneToMany( fetch = FetchType.EAGER, mappedBy="masterAccount", cascade = CascadeType.ALL)
     private Collection<EmailAccount> emailAccounts= new ArrayList<>();
 
     public MasterAccount() {
@@ -58,7 +58,7 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount  , U
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
 
-        //TODO TODO right implementation
+        //TODO right implementation
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         authorities.add( new Authority(EnumAuthority.MASTER_ACCOUNT_CREATE.toString()));
@@ -120,7 +120,7 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount  , U
 
     @Override
     public String toString() {
-        return "MasterAccount{" +
+        return "masterAccount{" +
                 "accountName='" + accountName + '\'' +
                 ", password='" + password + '\'' +
                 ", user ID =" + user.getId() +

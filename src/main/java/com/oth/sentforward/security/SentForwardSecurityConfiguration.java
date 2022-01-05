@@ -2,10 +2,10 @@ package com.oth.sentforward.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,22 +30,23 @@ public class SentForwardSecurityConfiguration extends WebSecurityConfigurerAdapt
         return securityUtils.passwordEncoder();
     }
 
-
-    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = { "/login", "/register", "/registrationSubmit","/css/**","/"};
-
-
-
+    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = { "/login", "/calendars","/register", "/registrationSubmit","/css/**","js/**"};
+    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST ={"/calendars"};
 
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .authorizeRequests()
-                .antMatchers(ALLOW_ACCESS_WITHOUT_AUTHENTICATION)
-                .permitAll().anyRequest()
-                .authenticated();
+                .antMatchers(HttpMethod.GET,ALLOW_ACCESS_WITHOUT_AUTHENTICATION)
+                    .permitAll()
+                .antMatchers(HttpMethod.POST, ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST)
+                    .permitAll()
+                .anyRequest()
+                .authenticated()
+                ;
+
 
         http
-
-
 
                 .formLogin()
                 .loginPage("/login").permitAll()
@@ -61,6 +62,7 @@ public class SentForwardSecurityConfiguration extends WebSecurityConfigurerAdapt
 
                 .and()
                     .rememberMe();
+        http.csrf().disable();
 
 
 
