@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div th:replace="/basic/basic-fragments :: stylesheets"></div>
+    <div th:replace="/basic/basic-fragments :: sidebar-stylesheet"></div>
+    <div th:replace="/basic/basic-fragments :: scripts"></div>
+
+    <title>Account</title>
+</head>
+<body>
+
+<div id="body-pd">
+    <div th:replace="basic/account-layout :: sidebar"></div>
+    <div class="account-content">
+
+        <form method="post" name="SendEmailForm" th:onsubmit="return validateEmailForm()" th:object="${sentEmailDto}">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="from-addon">From</span>
+                </div>
+                <div type="text" class="form-control" aria-label="Username" aria-describedby="from-addon1"
+                     th:text="${emailAccount.getEmailAddress()}"></div>
+            </div>
+
+            <div class="input-group mb-3">
+
+                <span class="input-group-text" id="to-addon">To</span>
+                <input type="text" th:field="*{to}" class="form-control" placeholder="XYZ@sentforward.de; ABC@sentforward.de" aria-label="To"
+                       aria-describedby="to-addon" name="to" id="to">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="subject-addon">Subject</span>
+                <input type="text" th:field="*{subject}" class="form-control" placeholder="Subject" aria-label="Subject"
+                       aria-describedby="subject-addon" name="subject" id="subject">
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" th:field="*{content}" rows="20" id="emailContent" placeholder="E-Mail Content ...."></textarea>
+            </div>
+
+
+            <input type="hidden" value="Send" name="hiddenButtonControl">
+            <div style="margin-top: 10px">
+                <!--                -->
+                <button type="submit" id="submit-Send" onclick="clickedSend()" class="btn btn-primary"
+                        th:formaction="${'/account/'+emailAccount.getId()+'/new'}">
+                    <i class="bi bi-send">&nbsp; Send</i>
+                </button>
+                <button type="submit" id="submit-Save" onclick="clickedSave()" class="btn btn-primary"
+                        th:formaction="${'/account/save/'+emailAccount.getId()}"
+                        style="float: right">
+                    <i class="bi bi-save">&nbsp; Save</i>
+
+                </button>
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+    function clickedSend() {
+        document.forms["SendEmailForm"]["hiddenButtonControl"].value = "Send";
+    };
+
+    function clickedSave() {
+        document.forms["SendEmailForm"]["hiddenButtonControl"].value = "Save";
+    };
+
+
+    function validateFormForSend() {
+        let isValid = true;
+
+        let to = document.forms["SendEmailForm"]["to"].value;
+
+        let subject = document.forms["SendEmailForm"]["subject"].value;
+        let content = document.getElementById("emailContent").value;
+
+        if (to == null || to == "") {
+            document.getElementById("to").classList.add("is-invalid")
+            isValid = false;
+        } else {
+            document.getElementById("to").classList.remove("is-invalid")
+        }
+
+        if (subject == null || subject == "") {
+            document.getElementById("subject").classList.add("is-invalid")
+            isValid = false;
+        } else {
+            document.getElementById("subject").classList.remove("is-invalid")
+        }
+
+        if (content == null || content == "") {
+            document.getElementById("emailContent").classList.add("is-invalid")
+            isValid = false;
+        } else {
+            document.getElementById("emailContent").classList.remove("is-invalid")
+        }
+
+        return isValid;
+    };
+
+    function validateEmailForm() {
+        let button = document.forms["SendEmailForm"]["hiddenButtonControl"].value;
+
+        if (button == "Send") {
+            return validateFormForSend();
+        }
+        return true;
+    };
+
+</script>
+
+</body>
+
+
+</html>

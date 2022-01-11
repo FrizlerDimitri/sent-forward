@@ -2,6 +2,8 @@ package com.oth.sentforward.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oth.sentforward.persistence.AbstractEntity;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -14,7 +16,7 @@ public class Calendar extends AbstractEntity<Long> {
     @Column(nullable = false)
     private String name="Calendar";
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<Appointment> appointments= new ArrayList<>();
 
 

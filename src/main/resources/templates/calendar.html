@@ -22,7 +22,7 @@
 <div id="body-pd">
     <div th:replace="basic/account-layout :: sidebar"></div>
     <!--    content-->
-    <div class="account-content bg-light">
+    <div class="account-content">
         <div class="space-top-bar" >
             <div  class="calendar-max-width bg-light" id='evoCalendar'></div>
         </div>
@@ -32,13 +32,38 @@
 </div>
 
     <script type="text/javascript" th:src="@{/js/evo-calendar.js}"></script>
-    <script>
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+
+        myEvents = []
+
+        /*[# th:each="appoint : ${calendar.getAppointments()}"]*/
+            let appoint_id = /*[[${appoint.getId()}]]*/ null
+            let appoint_name = /*[[${appoint.getName()}]]*/ null
+            let appoint_date = /*[[${appoint.getDate()}]]*/ null
+            let appoint_desc = /*[[${appoint.getDescription()}]]*/ null
+
+            appointment = {
+                id : appoint_id,
+                name: appoint_name,
+                date: appoint_date,
+                description : appoint_desc,
+                type: "event"
+            }
+            myEvents.push(appointment)
+
+        /*[/]*/
 
         $(document).ready(function() {
-            $('#evoCalendar').evoCalendar({
 
+            $('#evoCalendar').evoCalendar({
+                calendarEvents: myEvents
             })
         })
+
+        /*]]>*/
+
     </script>
 </body>
 </html>

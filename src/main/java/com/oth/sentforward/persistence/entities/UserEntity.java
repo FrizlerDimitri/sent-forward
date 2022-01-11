@@ -1,5 +1,6 @@
 package com.oth.sentforward.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.oth.sentforward.persistence.AbstractEntity;
 
 import javax.persistence.*;
@@ -16,6 +17,8 @@ public class UserEntity extends AbstractEntity<Long> {
     @Embedded
     private Address address;
 
+
+    @JsonBackReference
     @OneToOne(mappedBy = "user")
     private MasterAccount masterAccount;
 

@@ -54,6 +54,16 @@ public class AccountService implements IAccountService, UserDetailsService {
     }
 
     @Override
+    public Optional<EmailAccount> updateEmailAccount(EmailAccount emailAccount) {
+        return Optional.of(emailAccountRepository.save(emailAccount));
+    }
+
+    @Override
+    public Optional<Iterable<EmailAccount>> updateAllEmailAccount(Iterable<EmailAccount> emailAccounts) {
+        return Optional.of(emailAccountRepository.saveAll(emailAccounts));
+    }
+
+    @Override
     public Optional<EmailAccount> createEmailAccount(EmailAccount emailAccount) {
 
         Optional<EmailAccount> optionalMasterAccount = Optional.of(emailAccountRepository.save(emailAccount));
@@ -76,6 +86,11 @@ public class AccountService implements IAccountService, UserDetailsService {
     @Override
     public Optional<EmailAccount> getEmailAccountByEmailAddress(String emailAddress) {
         return emailAccountRepository.findEmailAccountByEmailAddress(emailAddress);
+    }
+
+    @Override
+    public Optional<EmailAccount> getEmailAccountById(Long id) {
+        return emailAccountRepository.findEmailAccountById(id);
     }
 
 

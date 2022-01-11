@@ -3,23 +3,24 @@ package com.oth.sentforward.persistence.entities;
 
 import com.oth.sentforward.persistence.AbstractEntity;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
 @MappedSuperclass
 public class AbstractEmail extends AbstractEntity<Long> {
 
+    @Column(columnDefinition = "TEXT")
     private String content;
+
     private String subject;
 
     @OneToOne
     private EmailAccount from;
 
-    @OneToMany
-    private Collection<EmailAccount> to;
+    @ManyToMany
+    private Collection<EmailAccount> to = new ArrayList<>();
 
     public AbstractEmail(String content, String subject, EmailAccount from, Collection<EmailAccount> to) {
         this.content = content;
@@ -54,6 +55,8 @@ public class AbstractEmail extends AbstractEntity<Long> {
     public void setFrom(EmailAccount from) {
         this.from = from;
     }
+
+
 
     public Collection<EmailAccount> getTo() {
         return to;

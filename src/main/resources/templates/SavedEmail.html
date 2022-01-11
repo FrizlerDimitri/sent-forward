@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{basic/account-layout}"
-
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,12 +26,12 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:each="sentEmail : ${sortedEmails}">
+            <th:block th:each="SavedEmail : ${sortedEmails}">
 
-                <tr th:onclick="'tableClick('+ ${sentEmail.getId()} +')'">
-                    <td th:text="${sentEmail.getFrom().getMasterAccount().getUsername()}"></td>
-                    <td th:text="${sentEmail.getSubject()}"></td>
-                    <td th:text="${sdf.format(sentEmail.getSentDate())}"></td>
+                <tr th:onclick="'tableClick('+ ${SavedEmail.getId()} +')'">
+                    <td th:text="${SavedEmail.getFrom().getMasterAccount().getUsername()}"></td>
+                    <td th:text="${SavedEmail.getSubject()}"></td>
+                    <td th:text="${sdf.format(SavedEmail.getLastModified())}"></td>
                 </tr>
 
             </th:block>
@@ -48,6 +44,5 @@
 </div>
 
 </body>
-
 
 </html>

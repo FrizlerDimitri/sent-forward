@@ -2,11 +2,10 @@ package com.oth.sentforward.webapp.controller;
 
 
 import com.oth.sentforward.bussnislogic.iservices.IAccountService;
-import com.oth.sentforward.bussnislogic.services.AccountService;
 import com.oth.sentforward.persistence.entities.Address;
 import com.oth.sentforward.persistence.entities.MasterAccount;
 import com.oth.sentforward.persistence.entities.UserEntity;
-import com.oth.sentforward.webapp.forms.RegisterForm;
+import com.oth.sentforward.webapp.dto.RegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RegisterController {
 
 
-    private final String REGISTER="register";
-
-
-
     @Autowired
     private IAccountService accountService;
 
@@ -29,7 +24,7 @@ public class RegisterController {
     @RequestMapping(value = "register")
     public String register(Model model) {
 
-        model.addAttribute("registerForm", new RegisterForm());
+        model.addAttribute("registerForm", new RegisterDto());
         return "register-account";
 
     }
@@ -38,13 +33,13 @@ public class RegisterController {
     @RequestMapping(value = "/registrationSubmit", method = RequestMethod.POST)
     public String registrationSubmit
             (
-                    @ModelAttribute("registerForm") RegisterForm registerForm
+                    @ModelAttribute("registerForm") RegisterDto registerDto
             ) throws Exception {
 
 
-        String accountName = registerForm.getAccountName();
-        String pw=registerForm.getPassword();
-        String pwConfirm=registerForm.getPasswordConfirm();
+        String accountName = registerDto.getAccountName();
+        String pw= registerDto.getPassword();
+        String pwConfirm= registerDto.getPasswordConfirm();
 
         //TODO create Exception and Handling
         if(!pw.equals(pwConfirm))
@@ -53,14 +48,14 @@ public class RegisterController {
         }
 
         //create user
-        String country=registerForm.getCountry();
-        String street=registerForm.getStreet();
-        String town=registerForm.getTown();
+        String country= registerDto.getCountry();
+        String street= registerDto.getStreet();
+        String town= registerDto.getTown();
 
         Address address = new Address(country,street,town);
 
-        String lastName = registerForm.getLastName();
-        String name = registerForm.getName();
+        String lastName = registerDto.getLastName();
+        String name = registerDto.getName();
 
         UserEntity user = new UserEntity(lastName,name,address);
 

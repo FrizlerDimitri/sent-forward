@@ -30,8 +30,9 @@ public class SentForwardSecurityConfiguration extends WebSecurityConfigurerAdapt
         return securityUtils.passwordEncoder();
     }
 
-    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = { "/login", "/calendars","/register", "/registrationSubmit","/css/**","js/**"};
-    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST ={"/calendars"};
+    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = { "/login","/register","/sentforward-rest-api/sentEmails","/css/**","js/**"};
+    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST ={"/sentforward-rest-api/calendars",
+            "/sentforward-rest-api/sentEmails","/registrationSubmit"};
 
     protected void configure(HttpSecurity http) throws Exception {
 

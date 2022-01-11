@@ -36,7 +36,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="date-addon">Date</span>
             </div>
-            <div type="text" class="form-control" aria-describedby="date-addon" th:text="${sdf.format(email.getSentDate())}" ></div>
+            <div type="text" class="form-control" aria-describedby="date-addon" th:text="${sdf.format(email.getReceivedDate())}" ></div>
         </div>
 
         <div class="input-group mb-3">

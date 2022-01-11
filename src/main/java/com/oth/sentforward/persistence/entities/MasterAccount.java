@@ -1,5 +1,8 @@
 package com.oth.sentforward.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.oth.sentforward.persistence.AbstractEntity;
 import com.oth.sentforward.security.Authority;
 import com.oth.sentforward.security.EnumAuthority;
@@ -22,10 +25,15 @@ public class MasterAccount extends AbstractEntity<Long> implements IAccount  , U
     @Column(nullable = false)
     private String password;
 
+
+
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="user_id", referencedColumnName = "id")
     private UserEntity user;
 
+
+    @JsonBackReference
     @OneToMany( fetch = FetchType.EAGER, mappedBy="masterAccount", cascade = CascadeType.ALL)
     private Collection<EmailAccount> emailAccounts= new ArrayList<>();
 

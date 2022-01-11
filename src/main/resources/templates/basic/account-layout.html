@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"  >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,112 +13,108 @@
 </head>
 <body>
 
-        <div id="body-pd">
-        <div th:fragment="sidebar">
+<div id="body-pd">
+    <div th:fragment="sidebar">
         <header class="header" id="header">
-        <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
-        <div class="header-button-bar">
-            <div class="dropdown">
-                <i class='header-button-bar-button bi-plus' role="button" type="button" id="dropdownMenuButton"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-<!--                    <form class="h-100 h-custom gradient-custom-2" th:action="@{/account}" th:object="${emailAccount}"-->
-<!--                          method="post">-->
-<!--                        <div class="form-group">-->
-<!--                            <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"-->
-<!--                                   placeholder="Enter email" th:field="*{emailAddress}">-->
+            <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
 
-<!--                            <label type="text" for="exampleInputEmail1">Email address</label>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <input class="form-control" id="exampleInputPassword1" placeholder="Password"-->
-<!--                                   th:field="*{emailPw}">-->
-<!--                            <label type="text" for="exampleInputPassword1">Password</label>-->
-<!--                        </div>-->
-
-<!--                        <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--                    </form>-->
-                </div>
-            </div>
-        </div>
-
-    </header>
+        </header>
         <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div>
-                <a href="#" class="nav_logo">
-                    <i class='bi bi-person nav_logo-icon'></i>
-                    <span class="nav_logo-name">Sentforward</span>
-                </a>
-                <div class="nav_list">
-                    <ul class="email-list">
-                        <th:block th:each="emailAccount : ${masterAccount.getEmailAccounts()} ">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav_logo">
+                        <i class='bi bi-person nav_logo-icon'></i>
+                        <span class="nav_logo-name">Sentforward</span>
+                    </a>
+                    <div class="nav_list">
+                        <ul class="email-list">
+
                             <li>
+                                <a th:href="@{/account/newEmail}">
+                                    <p class="nav_link" role="button">
+                                        <i class="bi bi-plus-lg"></i>
+                                        <span class="nav_name">New E-Mail Address</span>
 
-
-                                <p th:href="'#collapse'+${emailAccount.getId()}" class="nav_link" role="button"
-                                   data-toggle="collapse"
-                                   aria-expanded="false" th:attr="aria-controls='collapse'+${emailAccount.getId()}">
-                                    <i class='bi bi-envelope'></i>
-
-                                    <!--                                    class="active"-->
-                                    <span class="nav_name " th:text="${emailAccount.getEmailAddress()}"> </span>
-                                </p>
-
-                                <div class="collapse" th:id="'collapse'+${emailAccount.getId()}">
-                                    <ul class="email-list-comp">
-
-                                        <li>
-                                            <a th:href="@{'/account/calendar/'+${emailAccount.getId()} }">
-                                                <p class="nav_link-component">
-                                                    <i class="bi bi-calendar"></i>
-                                                    <span class="nav_name" th:text="Calendar"> </span>
-                                                </p>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <p class="nav_link-component">
-                                                <i class="bi bi-inbox"></i>
-                                                <span class="nav_name" th:text="Inbox"> </span>
-                                            </p>
-
-                                        </li>
-
-                                        <li>
-                                            <a th:href="@{'/account/sent/'+${emailAccount.getId()} }">
-                                                <p class="nav_link-component">
-                                                    <i class="bi bi-send"></i>
-                                                    <span class="nav_name" th:text="Sent"> </span>
-                                                </p>
-                                            </a>
-
-                                        </li>
-                                    </ul>
-                                </div>
-
+                                    </p>
+                                </a>
                             </li>
-                        </th:block>
 
-                    </ul>
+                            <th:block th:each="emailAccount : ${masterAccount.getEmailAccounts()} ">
+                                <li>
 
+                                    <p th:href="'#collapse'+${emailAccount.getId()}" class="nav_link" role="button"
+                                       data-toggle="collapse"
+                                       aria-expanded="false" th:attr="aria-controls='collapse'+${emailAccount.getId()}">
+                                        <i class='bi bi-envelope'></i>
+
+                                        <!--                                    class="active"-->
+                                        <span class="nav_name " th:text="${emailAccount.getEmailAddress()}"> </span>
+                                    </p>
+
+                                    <div class="collapse" th:id="'collapse'+${emailAccount.getId()}">
+                                        <ul class="email-list-comp">
+
+                                            <li>
+                                                <a th:href="@{'/account/'+${emailAccount.getId()}+'/new' }">
+                                                    <p class="nav_link-component">
+                                                        <i class="bi bi-plus-circle"></i>
+                                                        <span class="nav_name" th:text="'Add E-mail'"> </span>
+                                                    </p>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a th:href="@{'/account/inbox/'+${emailAccount.getId()} }">
+                                                    <p class="nav_link-component">
+                                                        <i class="bi bi-inbox"></i>
+                                                        <span class="nav_name" th:text="Inbox"> </span>
+                                                    </p>
+                                                </a>
+
+                                            </li>
+
+                                            <li>
+                                                <a th:href="@{'/account/sent/'+${emailAccount.getId()} }">
+                                                    <p class="nav_link-component">
+                                                        <i class="bi bi-send"></i>
+                                                        <span class="nav_name" th:text="Sent"> </span>
+                                                    </p>
+                                                </a>
+
+                                            </li>
+
+                                            <li>
+                                                <a th:href="@{'/account/calendar/'+${emailAccount.getCalendar().getId()} }">
+                                                    <p class="nav_link-component">
+                                                        <i class="bi bi-calendar"></i>
+                                                        <span class="nav_name" th:text="Calendar"> </span>
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </li>
+                            </th:block>
+
+                        </ul>
+
+                    </div>
                 </div>
-            </div>
-            <a href="/logout" class="nav_link">
-                <i class='bi bi-box-arrow-left nav_icon'></i>
-                <span class="nav_name">Logout</span>
-            </a>
-        </nav>
-    </div>
-        </div>
-            <!--Container Main start-->
-            <div class="account-content bg-light">
-
-
-
-            </div>
+                <a href="/logout" class="nav_link">
+                    <i class='bi bi-box-arrow-left nav_icon'></i>
+                    <span class="nav_name">Logout</span>
+                </a>
+            </nav>
         </div>
     </div>
+    <!--Container Main start-->
+    <div class="account-content">
+
+
+    </div>
+</div>
+</div>
 
 
 </body>

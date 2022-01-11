@@ -10,6 +10,11 @@ public interface IAccountService {
 
     Optional <MasterAccount> createMasterAccount(MasterAccount masterAccount);
     Optional <MasterAccount> updateMasterAccount(MasterAccount masterAccount);
+    Optional <EmailAccount> updateEmailAccount(EmailAccount emailAccount);
+    Optional <Iterable<EmailAccount>> updateAllEmailAccount(Iterable<EmailAccount> emailAccounts);
+
+
+
 
     Optional<EmailAccount> createEmailAccount(EmailAccount emailAccount);
 
@@ -18,6 +23,8 @@ public interface IAccountService {
     Optional<MasterAccount> getMasterAccountByAccountname(String accountName);
 
     Optional<EmailAccount> getEmailAccountByEmailAddress(String emailAddress);
+
+    Optional<EmailAccount> getEmailAccountById(Long id);
 
 
 

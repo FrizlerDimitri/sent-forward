@@ -1,20 +1,18 @@
 package com.oth.sentforward.webapp.controller;
 
 
-import com.oth.sentforward.Utils.SentForwardUtilsConfig;
 import com.oth.sentforward.bussnislogic.services.AccountService;
 import com.oth.sentforward.persistence.entities.EmailAccount;
 import com.oth.sentforward.persistence.entities.MasterAccount;
+import com.oth.sentforward.webapp.dto.NewAddressDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @Controller
@@ -24,13 +22,9 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private SentForwardUtilsConfig utilsConfig;
-
     @RequestMapping(value="/account")
     public String account(Model model, Principal principal)
     {
-        model.addAttribute("emailAccount", new EmailAccount());
         Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
             model.addAttribute("masterAccount", acc);
@@ -40,14 +34,9 @@ public class AccountController {
         return "account";
     }
 
-
-
     @RequestMapping(value="/test")
     public String accountLayout(Model model, Principal principal)
     {
-
-
-        model.addAttribute("emailAccount", new EmailAccount());
         Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
             model.addAttribute("masterAccount", acc);
@@ -55,6 +44,45 @@ public class AccountController {
         });
 
         return "basic/account-layout";
+    }
+
+
+    @RequestMapping(value = "account/newEmail")
+    public String createNewEmail(Model model, Principal principal)
+    {
+
+        model.addAttribute("newAddressDto", new NewAddressDto());
+        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+        optionalMasterAccount.ifPresent(acc -> {
+            model.addAttribute("masterAccount", acc);
+            model.addAttribute("user", acc.getUser());
+        });
+
+        return "createNewAddress";
+    }
+
+    @RequestMapping(value = "account/newEmail", method = RequestMethod.POST)
+    public String createNewEmailPost(Model model, Principal principal, NewAddressDto newAddressDto)
+    {
+        String emailAddress = newAddressDto.getEmailAddress()+"@sentforward.de";
+
+        //TODO if the account exist already -> error
+
+        EmailAccount newEmailAccount= new EmailAccount();
+        newEmailAccount.setEmailAddress(emailAddress);
+
+
+        Optional<MasterAccount> optionalMasterAccount= accountService.getMasterAccountByAccountname(principal.getName());
+        optionalMasterAccount.ifPresent( acc -> {
+
+            newEmailAccount.setMasterAccount(acc);
+            acc.getEmailAccounts().add(newEmailAccount);
+            accountService.updateMasterAccount(acc);
+
+        });
+
+
+        return "redirect:/account";
     }
 
 
@@ -66,10 +94,6 @@ public class AccountController {
 
     )
     {
-        System.out.println(emailAccount.getEmailAddress());
-        System.out.println(emailAccount.getEmailPw());
-        System.out.println(principal.getName());
-
 
         Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
 
@@ -81,8 +105,6 @@ public class AccountController {
             emailAccount.setMasterAccount(masterAccount);
             accountService.updateMasterAccount(masterAccount);
 
-        }else{
-            System.out.println("can not found");
         }
 
         return "redirect:/account";
@@ -90,53 +112,10 @@ public class AccountController {
 
 
 
-    @RequestMapping(value="/account/calendar/{emailAddressId}")
-    public String getCalendar(Model model, @PathVariable("emailAddressId") Long emailAddressId, Principal principal)
-    {
-//        EmailAccount emailAccount=new EmailAccount();
-//        emailAccount.setId(emailAddressId);
-//        Optional<EmailAccount> optionalEmailAccount= accountService.loadEmailAccount(emailAccount);
-//        optionalEmailAccount.ifPresent( eAcc -> {
-//            model.addAttribute("emailAccount",eAcc);
-//            model.addAttribute("Calendar", eAcc.getCalendar());
-//        });
-
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
-        optionalMasterAccount.ifPresent(acc -> {
-            model.addAttribute("masterAccount", acc);
-            model.addAttribute("user", acc.getUser());
-        });
-
-        // model.addAttribute()
-        return "calendar";
-    }
 
 
-    @RequestMapping(value="/account/sent/{emailAddressId}")
-    public String getSent(Model model, @PathVariable("emailAddressId") Long emailAddressId, Principal principal)
-    {
-        //For Sidebar
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
-        optionalMasterAccount.ifPresent(acc -> {
-            model.addAttribute("masterAccount", acc);
-            model.addAttribute("user", acc.getUser());
-        });
 
 
-        // For Content
-        EmailAccount emailAccount=new EmailAccount();
-        emailAccount.setId(emailAddressId);
-        Optional<EmailAccount> optionalEmailAccount= accountService.loadEmailAccount(emailAccount);
-        optionalEmailAccount.ifPresent( eAcc -> {
-            model.addAttribute("emailAccount",eAcc);
-            //SimpleDateFormat sdf= new SimpleDateFormat("MM.dd.yyyy, hh:mm");
-            model.addAttribute("sdf", utilsConfig.getSDF());
-
-        });
-
-        // model.addAttribute()
-        return "sentEmail";
-    }
 
 
 

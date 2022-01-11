@@ -1,6 +1,6 @@
-package com.oth.sentforward.webapp.forms;
+package com.oth.sentforward.webapp.dto;
 
-public class RegisterForm {
+public class RegisterDto {
 
     private String accountName;
     private String password;
@@ -13,16 +13,16 @@ public class RegisterForm {
     private String street;
 
 
-    public RegisterForm() {
+    public RegisterDto() {
     }
 
-    public RegisterForm(String accountName, String password, String passwordConfirm) {
+    public RegisterDto(String accountName, String password, String passwordConfirm) {
         this.accountName = accountName;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
     }
 
-    public RegisterForm(String lastName, String name, String country, String town, String street) {
+    public RegisterDto(String lastName, String name, String country, String town, String street) {
         this.lastName = lastName;
         this.name = name;
         this.country = country;
@@ -30,7 +30,7 @@ public class RegisterForm {
         this.street = street;
     }
 
-    public RegisterForm(String accountName, String password, String passwordConfirm, String lastName, String name, String country, String town, String street) {
+    public RegisterDto(String accountName, String password, String passwordConfirm, String lastName, String name, String country, String town, String street) {
         this.accountName = accountName;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -108,7 +108,7 @@ public class RegisterForm {
 
     @Override
     public String toString() {
-        return "RegisterForm{" +
+        return "RegisterDto{" +
                 "accountName='" + accountName + '\'' +
                 ", password='" + password + '\'' +
                 ", passwordConfirm='" + passwordConfirm + '\'' +

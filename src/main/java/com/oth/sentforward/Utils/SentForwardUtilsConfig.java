@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Locale;
 
 @Configuration
 public class SentForwardUtilsConfig {
@@ -13,9 +14,7 @@ public class SentForwardUtilsConfig {
     @Bean
     public SimpleDateFormat getSDF()
     {
-       return new SimpleDateFormat("MM.dd.yyyy, hh:mm");
+       return new SimpleDateFormat("MMMM/dd/yyyy, HH:mm", Locale.ENGLISH);
     }
-
-
 
 }
