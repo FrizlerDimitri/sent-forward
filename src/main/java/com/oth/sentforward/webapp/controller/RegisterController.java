@@ -16,48 +16,69 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RegisterController {
 
-
     @Autowired
     private IAccountService accountService;
 
-
     @RequestMapping(value = "register")
     public String register(Model model) {
+
 
         model.addAttribute("registerForm", new RegisterDto());
         return "register-account";
 
     }
 
+    @RequestMapping(value = "/register/pw-error")
+    public String pwError(Model model) {
+
+        model.addAttribute("registerForm", new RegisterDto());
+        model.addAttribute("pwError", true);
+        return "register-account";
+
+    }
+
+    @RequestMapping(value = "/register/ac-error")
+    public String accountError(Model model) {
+
+
+        model.addAttribute("registerForm", new RegisterDto());
+        model.addAttribute("acError", true);
+        return "register-account";
+
+    }
+
+
 
     @RequestMapping(value = "/registrationSubmit", method = RequestMethod.POST)
-    public String registrationSubmit
-            (
-                    @ModelAttribute("registerForm") RegisterDto registerDto
-            ) throws Exception {
+    public String registrationSubmit(@ModelAttribute("registerForm") RegisterDto registerDto) {
 
 
         String accountName = registerDto.getAccountName();
-        String pw= registerDto.getPassword();
-        String pwConfirm= registerDto.getPasswordConfirm();
+
+        if (accountService.getMasterAccountByAccountname(accountName).isPresent()) {
+            return "redirect:/register/ac-error";
+        }
+
+
+        String pw = registerDto.getPassword();
+        String pwConfirm = registerDto.getPasswordConfirm();
 
         //TODO create Exception and Handling
-        if(!pw.equals(pwConfirm))
-        {
-            throw new Exception("passwords are different");
+        if (!pw.equals(pwConfirm)) {
+            return "redirect:/register/pw-error";
         }
 
         //create user
-        String country= registerDto.getCountry();
-        String street= registerDto.getStreet();
-        String town= registerDto.getTown();
+        String country = registerDto.getCountry();
+        String street = registerDto.getStreet();
+        String town = registerDto.getTown();
 
-        Address address = new Address(country,street,town);
+        Address address = new Address(country, street, town);
 
         String lastName = registerDto.getLastName();
         String name = registerDto.getName();
 
-        UserEntity user = new UserEntity(lastName,name,address);
+        UserEntity user = new UserEntity(lastName, name, address);
 
         //create masterAccount
         MasterAccount masterAccount = new MasterAccount(accountName, pw, user);

@@ -2,6 +2,7 @@ package com.oth.sentforward;
 import com.oth.sentforward.bussnislogic.iservices.IAccountService;
 import com.oth.sentforward.bussnislogic.iservices.ICalendarService;
 import com.oth.sentforward.bussnislogic.iservices.IEmailService;
+import com.oth.sentforward.bussnislogic.services.CalendarService;
 import com.oth.sentforward.persistence.entities.*;
 import com.oth.sentforward.persistence.repositories.IMasterAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class SentForwardApplication implements ApplicationRunner {
 	IAccountService accountService;
 
 	@Autowired
-	ICalendarService calendarService;
+	CalendarService calendarService;
 
 	@Autowired
 	IEmailService emailService;
@@ -141,6 +142,10 @@ public class SentForwardApplication implements ApplicationRunner {
 		}
 
 		accountService.updateMasterAccount(testTestMasterAccount);
+
+//		calendarService.getCooksFromHomeDente();
+//		calendarService.orderChefFromHomeDente();
+
 
 	}
 }

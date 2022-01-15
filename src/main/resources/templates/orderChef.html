@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div th:replace="/basic/basic-fragments :: stylesheets"></div>
+    <div th:replace="/basic/basic-fragments :: sidebar-stylesheet"></div>
+
+    <div th:replace="/basic/basic-fragments :: scripts"></div>
+
+    <title>Account</title>
+</head>
+<body>
+
+<div id="body-pd">
+    <div th:replace="basic/account-layout :: sidebar"></div>
+
+
+
+    <div class="account-content">
+
+        <form class="form-group" method="post"  th:action="${'/account/calendar/'+emailAccount.getId() +'/'+ calendar.getId()+'/order-chef/'+chef.getId() }" th:object="${orderDTO}">
+
+            <div class="row mb-3">
+                <label for="inputDateHomeDente" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="inputDateHomeDente" th:field="*{date}" required>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <textarea class="form-control" id="descriptionHomeDente" rows="10" placeholder="Description" th:field="*{details}"></textarea>
+            </div>
+
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+
+                    <th scope="col">Dish</th>
+                    <th scope="col">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                    <th:block th:each="order, row : *{orders}">
+<!--                        <th:block th:each="order : *{orders}" >-->
+                        <tr>
+                            <td th:text="${order.getDish().getName()}"></td>
+<!--                            <input type="hidden" th:value="${order.getDish()}" th:field="*{orders[__${row.index}__].dish}">-->
+                            <input type="hidden" th:value="${order.getDish().getId()}" th:field="*{orders[__${row.index}__].dish.id}">
+                            <input type="hidden" th:value="${order.getDish().getName()}" th:field="*{orders[__${row.index}__].dish.name}">
+                            <td>
+                                <input min="0" max="1000" type="number" th:field="*{orders[__${row.index}__].amount}">
+                            </td>
+                        </tr>
+<!--                        </th:block>-->
+                    </th:block>
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary space-5p">Order Chef</button>
+        </form>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+
+</html>

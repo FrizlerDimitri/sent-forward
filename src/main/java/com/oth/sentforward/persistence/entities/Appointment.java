@@ -2,6 +2,7 @@ package com.oth.sentforward.persistence.entities;
 
 
 import com.oth.sentforward.persistence.AbstractEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -15,11 +16,12 @@ public class Appointment extends AbstractEntity<Long> {
 
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    private Timestamp startTime;
+    private Date startTime;
 
-    private Timestamp endTime;
+    private Date endTime;
 
     private String description;
 
@@ -57,19 +59,19 @@ public class Appointment extends AbstractEntity<Long> {
         this.date = date;
     }
 
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp start) {
+    public void setStartTime(Date start) {
         this.startTime = start;
     }
 
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp end) {
+    public void setEndTime(Date end) {
         this.endTime = end;
     }
 

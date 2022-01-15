@@ -2,7 +2,7 @@
 
 :root {
     --header-height: 3rem;
-    --nav-width: 68px;
+    --nav-width: 120px;
     --first-color: #0d6efd;
     --first-color-light: #AFA5D9;
     --white-color: #F7F6FB;
@@ -71,7 +71,7 @@ a {
     position: fixed;
     top: 0;
     left: -30%;
-    width: var(--nav-width);
+    width: 68px;
     height: 100vh;
     background-color: var(--first-color);
     padding: .5rem 1rem 0 0;
@@ -79,7 +79,7 @@ a {
     z-index: var(--z-fixed)
 }
 
-.nav {
+.nav-sidebar {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -168,9 +168,8 @@ a {
 
 .email-list-comp{
     list-style-type: none;
-    /*margin: 0;*/
-    /*padding: 0;*/
 }
+
 
 .header-button-bar-button {
     color: var(--first-color);
@@ -192,14 +191,6 @@ a {
         padding: 0 2rem 0 calc(var(--nav-width) + 2rem)
     }
 
-    .header_img {
-        width: 40px;
-        height: 40px
-    }
-
-    .header_img img {
-        width: 45px
-    }
 
     .l-navbar {
         left: 0;

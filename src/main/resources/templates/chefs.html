@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div th:replace="/basic/basic-fragments :: stylesheets"></div>
+    <div th:replace="/basic/basic-fragments :: sidebar-stylesheet"></div>
+
+    <div th:replace="/basic/basic-fragments :: scripts"></div>
+
+    <title>Account</title>
+</head>
+<body>
+
+<div id="body-pd">
+    <div th:replace="basic/account-layout :: sidebar"></div>
+    <div class="account-content">
+
+        <th:block th:each="chef : ${chefs}">
+
+            <div class="card">
+                <h5 class="card-header">
+
+                    <div class="row">
+                        <div class="col" th:text="${chef.getUsername()}"></div>
+
+                        <div class="col" th:if="${chef.getAvgRating() > 0.1 }">
+                            <div style="float: right" th:text="${'Rating : ' + chef.getAvgRating()}"></div>
+                        </div>
+
+                    </div>
+
+                </h5>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="Details"></h5>
+
+                    <p class="card-text" th:text="${'Firstname : '+chef.getFirstName()}"></p>
+                    <p class="card-text" th:text="${'Lastname : '+chef.getLastName()}"></p>
+                    <p class="card-text" th:text="${'Origin: '+chef.getOrigin()}"></p>
+
+                    <a th:href="${'/account/calendar/'+ emailAccount.getId()+'/'+ calendar.getId()+'/order-chef/'+chef.getId() }"
+                       class="btn btn-primary">Ordner</a>
+                </div>
+            </div>
+
+        </th:block>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+
+</html>

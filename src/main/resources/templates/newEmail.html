@@ -22,7 +22,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="from-addon">From</span>
                 </div>
-                <div type="text" class="form-control" aria-label="Username" aria-describedby="from-addon1"
+                <div type="text" class="form-control" aria-label="Username" aria-describedby="from-addon"
                      th:text="${emailAccount.getEmailAddress()}"></div>
             </div>
 
@@ -68,7 +68,6 @@
 
 
 <script>
-
 
     function clickedSend() {
         document.forms["SendEmailForm"]["hiddenButtonControl"].value = "Send";

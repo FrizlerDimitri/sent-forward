@@ -10,60 +10,66 @@
 
     <div th:replace="basic/basic-fragments :: scripts"></div>
 
-
-<!--    calendar-->
-
-
-
-
-    <title>Title</title>
+    <title>Calendar</title>
 </head>
 <body>
 <div id="body-pd">
     <div th:replace="basic/account-layout :: sidebar"></div>
     <!--    content-->
     <div class="account-content">
-        <div class="space-top-bar" >
-            <div  class="calendar-max-width bg-light" id='evoCalendar'></div>
+        <div class="space-top-bar">
+            <div class="calendar-width" id='evoCalendar'></div>
+        </div>
+        <div class="centre space-5p">
+
+            <a th:href="@{'/account/calendar/new-appointment/'+ ${calendar.getId()}}" method="get">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Add new Appointment
+                </button>
+            </a>
+
+            <a th:href="@{'/account/calendar/'+${emailAccount.getId()}+'/' + ${calendar.getId()}+'/order-chef'}" method="get">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Order Chef
+                </button>
+            </a>
+
         </div>
 
     </div>
 
+
 </div>
 
-    <script type="text/javascript" th:src="@{/js/evo-calendar.js}"></script>
-    <script th:inline="javascript">
+<script type="text/javascript" th:src="@{/js/evo-calendar.js}"></script>
 
-        /*<![CDATA[*/
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    $(document).ready(function () {
 
         myEvents = []
 
         /*[# th:each="appoint : ${calendar.getAppointments()}"]*/
-            let appoint_id = /*[[${appoint.getId()}]]*/ null
-            let appoint_name = /*[[${appoint.getName()}]]*/ null
-            let appoint_date = /*[[${appoint.getDate()}]]*/ null
-            let appoint_desc = /*[[${appoint.getDescription()}]]*/ null
 
-            appointment = {
-                id : appoint_id,
-                name: appoint_name,
-                date: appoint_date,
-                description : appoint_desc,
-                type: "event"
-            }
-            myEvents.push(appointment)
+        appointment = {
+            id: /*[[${appoint.getId()}]]*/ null,
+            name: /*[[${appoint.getName()}]]*/ null,
+            date: /*[[${appoint.getDate()}]]*/ null,
+            description: /*[[${appoint.getDescription()}]]*/ null,
+            type: "event"
+        }
+
+        myEvents.push(appointment)
 
         /*[/]*/
 
-        $(document).ready(function() {
-
-            $('#evoCalendar').evoCalendar({
-                calendarEvents: myEvents
-            })
+        $('#evoCalendar').evoCalendar({
+            calendarEvents: myEvents
         })
+    })
 
-        /*]]>*/
+    /*]]>*/
 
-    </script>
+</script>
 </body>
 </html>

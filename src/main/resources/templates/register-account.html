@@ -14,23 +14,27 @@
 
 <div>
 
-    <form class="h-100 h-custom gradient-custom-2" th:action="@{/registrationSubmit}"  th:object="${registerForm}" method="post">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12">
-                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-                        <div class="card-body p-0">
-                            <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="p-5">
-                                        <h3 class="fw-normal mb-5" style="color: dodgerblue;">Account</h3>
+    <div class="container">
 
-<!--                                        <div class="row">-->
+        <form class="h-100 h-custom gradient-custom-2" th:action="@{/registrationSubmit}" th:object="${registerForm}"
+              method="post">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12">
+                        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
+                                    <div class="col-lg-6">
+                                        <div class="p-5">
+                                            <h3 class="fw-normal mb-5" style="color: dodgerblue;">Account</h3>
+
                                             <div class="col-md-6 mb-4 pb-2">
+
 
                                                 <div class="form-outline">
                                                     <input type="text" id="account-name"
-                                                           class="form-control form-control-lg " th:field="*{accountName}" required />
+                                                           class="form-control form-control-lg "
+                                                           th:field="*{accountName}" required/>
                                                     <label class="form-label required-label" for="account-name">Accountname</label>
                                                 </div>
 
@@ -39,100 +43,100 @@
 
                                                 <div class="form-outline">
                                                     <input type="password" id="password"
-                                                           class="form-control form-control-lg"  th:field="*{password}" required/>
-                                                    <label class="form-label required-label" for="password" >password</label>
+                                                           class="form-control form-control-lg" th:field="*{password}"
+                                                           required/>
+                                                    <label class="form-label required-label"
+                                                           for="password">password</label>
                                                 </div>
                                             </div>
 
-                                        <div class="col-md-6 mb-4 pb-2">
+                                            <div class="col-md-6 mb-4 pb-2">
 
-                                            <div class="form-outline">
-                                                <input type="password" id="confirm-password"
-                                                       class="form-control form-control-lg" th:field="*{passwordConfirm}" required/>
-                                                <label class="form-label required-label" for="confirm-password">Confirm Password</label>
+                                                <div class="form-outline">
+                                                    <input type="password" id="confirm-password"
+                                                           class="form-control form-control-lg"
+                                                           th:field="*{passwordConfirm}" required/>
+                                                    <label class="form-label required-label" for="confirm-password">Confirm
+                                                        Password</label>
+                                                </div>
                                             </div>
+
+
                                         </div>
-
-
-<!--                                        </div>-->
-
-
-
-
-
-
                                     </div>
-                                </div>
-                                <div class="col-lg-6 bg-indigo text-white">
-                                    <div class="p-5">
-                                        <h3 class="fw-normal mb-5">Contact Details</h3>
+                                    <div class="col-lg-6 bg-dodgerblue text-white">
+                                        <div class="p-5">
+                                            <h3 class="fw-normal mb-5">Contact Details</h3>
 
-                                        <div class="mb-4 pb-2">
-                                            <div class="form-outline form-white">
-                                                <input type="text" id="lastname"
-                                                       class="form-control form-control-lg" th:field="*{lastName}" required/>
-                                                <label class="form-label required-label" for="lastname">Lastname</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-4 pb-2">
-                                            <div class="form-outline form-white">
-                                                <input type="text" id="name"
-                                                       class="form-control form-control-lg" th:field="*{name}" required/>
-                                                <label class="form-label required-label" for="name">Name</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-5 mb-4 pb-2">
-
+                                            <div class="mb-4 pb-2">
                                                 <div class="form-outline form-white">
-                                                    <input type="text" id="country"
-                                                           class="form-control form-control-lg" th:field="*{country}"/>
-                                                    <label class="form-label" for="country">Country</label>
+                                                    <input type="text" id="lastname"
+                                                           class="form-control form-control-lg" th:field="*{lastName}"
+                                                           required/>
+                                                    <label class="form-label required-label"
+                                                           for="lastname">Lastname</label>
                                                 </div>
-
                                             </div>
-                                            <div class="col-md-7 mb-4 pb-2">
 
+                                            <div class="mb-4 pb-2">
                                                 <div class="form-outline form-white">
-                                                    <input type="text" id="town"
-                                                           class="form-control form-control-lg" th:field="*{town}"/>
-                                                    <label class="form-label" for="town">town</label>
+                                                    <input type="text" id="name"
+                                                           class="form-control form-control-lg" th:field="*{name}"
+                                                           required/>
+                                                    <label class="form-label required-label" for="name">Name</label>
                                                 </div>
-
                                             </div>
-                                        </div>
 
-                                        <div class="mb-4 pb-2">
-                                            <div class="form-outline form-white">
-                                                <input type="text" id="street"
-                                                       class="form-control form-control-lg" th:field="*{street}"/>
-                                                <label class="form-label" for="street">Street</label>
+                                            <div class="row">
+                                                <div class="col-md-5 mb-4 pb-2">
+
+                                                    <div class="form-outline form-white">
+                                                        <input type="text" id="country"
+                                                               class="form-control form-control-lg"
+                                                               th:field="*{country}"/>
+                                                        <label class="form-label" for="country">Country</label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-7 mb-4 pb-2">
+
+                                                    <div class="form-outline form-white">
+                                                        <input type="text" id="town"
+                                                               class="form-control form-control-lg" th:field="*{town}"/>
+                                                        <label class="form-label" for="town">town</label>
+                                                    </div>
+
+                                                </div>
                                             </div>
+
+                                            <div class="mb-4 pb-2">
+                                                <div class="form-outline form-white">
+                                                    <input type="text" id="street"
+                                                           class="form-control form-control-lg" th:field="*{street}"/>
+                                                    <label class="form-label" for="street">Street</label>
+                                                </div>
+                                            </div>
+
+
+                                            <!--                                        <div class="form-check d-flex justify-content-start mb-4 pb-3">-->
+                                            <!--                                            <input-->
+                                            <!--                                                    class="form-check-input me-3"-->
+                                            <!--                                                    type="checkbox"-->
+                                            <!--                                                    value=""-->
+                                            <!--                                                    id="form2Example3c"-->
+                                            <!--                                            />-->
+                                            <!--                                            <label class="form-check-label text-white">-->
+                                            <!--                                                I do accept the <a href="#!" class="text-white"><u>Terms and-->
+                                            <!--                                                Conditions</u></a> of your site.-->
+                                            <!--                                            </label>-->
+                                            <!--                                        </div>-->
+
+                                            <button type="submit" class="btn btn-light btn-lg"
+                                                    data-mdb-ripple-color="dark">
+                                                Register
+                                            </button>
+
                                         </div>
-
-
-
-
-
-<!--                                        <div class="form-check d-flex justify-content-start mb-4 pb-3">-->
-<!--                                            <input-->
-<!--                                                    class="form-check-input me-3"-->
-<!--                                                    type="checkbox"-->
-<!--                                                    value=""-->
-<!--                                                    id="form2Example3c"-->
-<!--                                            />-->
-<!--                                            <label class="form-check-label text-white">-->
-<!--                                                I do accept the <a href="#!" class="text-white"><u>Terms and-->
-<!--                                                Conditions</u></a> of your site.-->
-<!--                                            </label>-->
-<!--                                        </div>-->
-
-                                        <button type="submit" class="btn btn-light btn-lg" data-mdb-ripple-color="dark">
-                                            Register
-                                        </button>
-
                                     </div>
                                 </div>
                             </div>
@@ -140,8 +144,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+
+            <div class="alert alert-danger" role="alert" th:if="${pwError}">
+                Passwords must be the same
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${acError}">
+                Account Name exists already
+            </div>
+    </div>
 
 
 </div>

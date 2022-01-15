@@ -34,6 +34,21 @@ public class AccountController {
         return "account";
     }
 
+    @RequestMapping(value="/account/service-error")
+    public String serviceNotAvailable(Model model, Principal principal)
+    {
+        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+        optionalMasterAccount.ifPresent(acc -> {
+            model.addAttribute("masterAccount", acc);
+            model.addAttribute("user", acc.getUser());
+        });
+
+        return "serviceNotAvailable";
+    }
+
+
+
+
     @RequestMapping(value="/test")
     public String accountLayout(Model model, Principal principal)
     {
