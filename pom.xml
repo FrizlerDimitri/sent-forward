@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.oth</groupId>
 	<artifactId>sent-forward</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>sent-forward </name>
 	<description>Project for  the OTH Regensburg for Software Development </description>
 	<properties>
@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>de.oth.homeDente</groupId>
 			<artifactId>homeDente</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 
 		<dependency>

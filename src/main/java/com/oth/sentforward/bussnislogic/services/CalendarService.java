@@ -82,7 +82,7 @@ public class CalendarService implements ICalendarService {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             HttpEntity <Order> entity = new HttpEntity<>(order, headers);
-            ResponseEntity<Order> responseEntity = restServiceClient.postForEntity(LOCAL_HOST+"restapi/orderChef",entity, Order.class);
+            ResponseEntity<Order> responseEntity = restServiceClient.postForEntity(OTH_HOST_HOME_DENTE+"restapi/orderChef",entity, Order.class);
 
             return responseEntity.getBody();
 
@@ -95,7 +95,7 @@ public class CalendarService implements ICalendarService {
         final String OTH_HOST_HOME_DENTE = "http://im-codd.oth-regensburg.de:8966/";
         final String LOCAL_HOST = "http://localhost:8081/";
 
-        List<Chef> chefs =  Arrays.asList(restServiceClient.getForObject(LOCAL_HOST+"restapi/chefs", Chef[].class));
+        List<Chef> chefs =  Arrays.asList(restServiceClient.getForObject(OTH_HOST_HOME_DENTE+"restapi/chefs", Chef[].class));
 
         return chefs;
 

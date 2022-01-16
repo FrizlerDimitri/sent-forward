@@ -25,33 +25,32 @@ public class SentForwardSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Autowired
     private SentForwardSecurityUtils securityUtils;
 
-    private BCryptPasswordEncoder passwordEncoder()
-    {
+    private BCryptPasswordEncoder passwordEncoder() {
         return securityUtils.passwordEncoder();
     }
 
-    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = { "/login","/register","/sentforward-rest-api/sentEmails","/register/ac-error","/register/pw-error","/css/**","js/**"};
-    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST ={"/sentforward-rest-api/calendars",
-            "/sentforward-rest-api/sentEmails","/registrationSubmit"};
+    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION = {"/login", "/register", "/sentforward-rest-api/sentEmails", "/register/ac-error", "/register/pw-error", "/css/**", "js/**"};
+    private static final String[] ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST = {"/sentforward-rest-api/calendars",
+            "/sentforward-rest-api/sentEmails", "/registrationSubmit"};
 
     protected void configure(HttpSecurity http) throws Exception {
 
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,ALLOW_ACCESS_WITHOUT_AUTHENTICATION)
-                    .permitAll()
+                .antMatchers(HttpMethod.GET, ALLOW_ACCESS_WITHOUT_AUTHENTICATION)
+                .permitAll()
                 .antMatchers(HttpMethod.POST, ALLOW_ACCESS_WITHOUT_AUTHENTICATION_POST)
-                    .permitAll()
+                .permitAll()
                 .anyRequest()
                 .authenticated()
-                ;
+        ;
 
 
         http
 
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/account",true)
+                .defaultSuccessUrl("/account", true)
                 .failureUrl("/login-Error")
 
 
@@ -62,13 +61,12 @@ public class SentForwardSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .permitAll()
 
                 .and()
-                    .rememberMe();
+                .rememberMe();
+
         http.csrf().disable();
 
 
-
     }
-
 
 
     @Autowired
