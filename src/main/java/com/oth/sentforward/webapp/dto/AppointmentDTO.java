@@ -1,8 +1,16 @@
 package com.oth.sentforward.webapp.dto;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
+
+@Component
+@RequestScope
 public class AppointmentDTO {
 
     private String name;

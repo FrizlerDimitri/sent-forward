@@ -20,16 +20,14 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th scope="col">From</th>
                 <th scope="col">Subject</th>
-                <th scope="col">Time</th>
+                <th scope="col">Last Modified</th>
             </tr>
             </thead>
             <tbody>
             <th:block th:each="SavedEmail : ${sortedEmails}">
 
                 <tr th:onclick="'tableClick('+ ${SavedEmail.getId()} +')'">
-                    <td th:text="${SavedEmail.getFrom().getMasterAccount().getUsername()}"></td>
                     <td th:text="${SavedEmail.getSubject()}"></td>
                     <td th:text="${sdf.format(SavedEmail.getLastModified())}"></td>
                 </tr>

@@ -8,7 +8,6 @@ import java.util.Date;
 @Entity
 public class SavedEmail extends AbstractEmail {
 
-    private Date savedDate;
 
     private Date lastModified;
 
@@ -16,18 +15,9 @@ public class SavedEmail extends AbstractEmail {
 
     }
 
-    public SavedEmail(String content, String subject, EmailAccount from, Collection<EmailAccount> to, Date savedDate, Date lastModified) {
+    public SavedEmail(String content, String subject, EmailAccount from, Collection<EmailAccount> to, Date lastModified) {
         super(content, subject, from, to);
-        this.savedDate = savedDate;
         this.lastModified = lastModified;
-    }
-
-    public Date getSavedDate() {
-        return savedDate;
-    }
-
-    public void setSavedDate(Date savedDate) {
-        this.savedDate = savedDate;
     }
 
     public Date getLastModified() {

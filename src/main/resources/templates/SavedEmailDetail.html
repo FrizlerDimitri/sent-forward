@@ -16,14 +16,14 @@
     <div th:replace="basic/account-layout :: sidebar"></div>
     <div class="account-content">
 
-        <form method="post" name="SendEmailForm" th:onsubmit="return validateEmailForm()" th:object="${sentEmailDto}" autocomplete="off">
+        <form method="post" name="SendEmailForm" th:onsubmit="return validateEmailForm()" th:object="${emailDTO}">
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="from-addon">From</span>
                 </div>
-                <div type="text" class="form-control" aria-label="Username" aria-describedby="from-addon"
-                     th:text="${emailAccount.getEmailAddress()}"></div>
+                <div type="text" class="form-control" aria-label="Username" aria-describedby="from-addon" th:text="${email.getFrom().getEmailAddress()}"
+                     ></div>
             </div>
 
             <div class="input-group mb-3">
@@ -35,24 +35,23 @@
 
             <div class="input-group mb-3">
                 <span class="input-group-text" id="subject-addon">Subject</span>
-                <input type="text" th:field="*{subject}" class="form-control" placeholder="Subject" aria-label="Subject"
-                       aria-describedby="subject-addon" name="subject" id="subject">
+                <input type="text" th:field="*{subject}" th:value="*{subject}" class="form-control"  aria-label="Subject"
+                       aria-describedby="subject-addon" name="subject" id="subject" >
             </div>
 
             <div class="form-group">
-                <textarea class="form-control" th:field="*{content}" rows="20" id="emailContent" placeholder="E-Mail Content ...."></textarea>
+                <textarea class="form-control" th:field="*{content}" rows="20" id="emailContent"  th:text="*{content}"></textarea>
             </div>
 
 
             <input type="hidden" value="Send" name="hiddenButtonControl">
             <div style="margin-top: 10px">
                 <!--                -->
-                <button type="submit" id="submit-Send" onclick="clickedSend()" class="btn btn-primary"
-                        th:formaction="${'/account/'+emailAccount.getId()+'/new'}">
+                <button type="submit" id="submit-Send" onclick="clickedSend()" th:formaction="${'/account/'+email.getFrom().getId()+'/new'}" class="btn btn-primary">
                     <i class="bi bi-send">&nbsp; Send</i>
                 </button>
-                <button type="submit" id="submit-Save" onclick="clickedSave()" class="btn btn-primary"
-                        th:formaction="${'/account/saved/'+emailAccount.getId()}"
+                <button type="submit" id="submit-Save" onclick="clickedSave()" th:formaction="${'/account/saved/'+email.getFrom().getId()+'?oldId='+email.getId()}" class="btn btn-primary"
+
                         style="float: right">
                     <i class="bi bi-save">&nbsp; Save</i>
 
@@ -110,7 +109,7 @@
 
         }
 
-
+        
         return isValid;
     };
 

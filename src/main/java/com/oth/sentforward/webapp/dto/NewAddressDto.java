@@ -1,5 +1,10 @@
 package com.oth.sentforward.webapp.dto;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
+@Component
+@RequestScope
 public class NewAddressDto {
     private String emailAddress;
 

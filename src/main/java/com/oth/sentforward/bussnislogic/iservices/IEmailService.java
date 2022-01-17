@@ -18,5 +18,8 @@ public interface IEmailService {
 
     Optional <SentEmail> sentEmail(SentEmail email) throws CanNotSentException;
 
+    Optional<SavedEmail> saveEmail(SavedEmail email);
+
+
 
 }

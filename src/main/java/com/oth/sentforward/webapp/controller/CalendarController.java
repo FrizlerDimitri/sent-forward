@@ -35,6 +35,9 @@ public class CalendarController {
     @Autowired
     private ICalendarService calendarService;
 
+    @Autowired
+    private AppointmentDTO appointmentDTO;
+
 
     @RequestMapping(value = "/account/calendar/{emailId}/{calendarId}")
     public String getCalendar(Model model, Principal principal, @PathVariable("emailId") Long emailId,@PathVariable("calendarId") Long calendarId) {
@@ -60,7 +63,7 @@ public class CalendarController {
     @RequestMapping(value = "/account/calendar/new-appointment/{calendarId}")
     public String createAppointment(Model model, Principal principal, @PathVariable("calendarId") Long calendarId) {
 
-        model.addAttribute("appointmentDTO", new AppointmentDTO());
+        model.addAttribute("appointmentDTO", appointmentDTO);
 
         Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {

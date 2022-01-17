@@ -1,6 +1,5 @@
 package com.oth.sentforward.webapp.controller;
 
-
 import com.oth.sentforward.bussnislogic.services.AccountService;
 import com.oth.sentforward.persistence.entities.EmailAccount;
 import com.oth.sentforward.persistence.entities.MasterAccount;
@@ -19,13 +18,17 @@ import java.util.Optional;
 public class AccountController {
 
 
+    private final String EMAIL_SUFFIX = "@sentforward.de";
+
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(value="/account")
-    public String account(Model model, Principal principal)
-    {
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+    @Autowired
+    private NewAddressDto newAddressDto;
+
+    @RequestMapping(value = "/account")
+    public String account(Model model, Principal principal) {
+        Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
             model.addAttribute("masterAccount", acc);
             model.addAttribute("user", acc.getUser());
@@ -34,10 +37,9 @@ public class AccountController {
         return "account";
     }
 
-    @RequestMapping(value="/account/service-error")
-    public String serviceNotAvailable(Model model, Principal principal)
-    {
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+    @RequestMapping(value = "/account/service-error")
+    public String serviceNotAvailable(Model model, Principal principal) {
+        Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
             model.addAttribute("masterAccount", acc);
             model.addAttribute("user", acc.getUser());
@@ -46,28 +48,21 @@ public class AccountController {
         return "serviceNotAvailable";
     }
 
-
-
-
-    @RequestMapping(value="/test")
-    public String accountLayout(Model model, Principal principal)
-    {
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+    @RequestMapping(value = "/test")
+    public String accountLayout(Model model, Principal principal) {
+        Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
             model.addAttribute("masterAccount", acc);
             model.addAttribute("user", acc.getUser());
         });
-
         return "basic/account-layout";
     }
 
-
     @RequestMapping(value = "account/newEmail")
-    public String createNewEmail(Model model, Principal principal)
-    {
+    public String createNewEmail(Model model, Principal principal) {
 
-        model.addAttribute("newAddressDto", new NewAddressDto());
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+        model.addAttribute("newAddressDto", newAddressDto);
+        Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
             model.addAttribute("masterAccount", acc);
             model.addAttribute("user", acc.getUser());
@@ -77,65 +72,48 @@ public class AccountController {
     }
 
     @RequestMapping(value = "account/newEmail", method = RequestMethod.POST)
-    public String createNewEmailPost(Model model, Principal principal, NewAddressDto newAddressDto)
-    {
-        String emailAddress = newAddressDto.getEmailAddress()+"@sentforward.de";
+    public String createNewEmailPost(Principal principal, NewAddressDto newAddressDto) {
+        String emailAddress = newAddressDto.getEmailAddress() + EMAIL_SUFFIX;
 
-        //TODO if the account exist already -> error
+        if (accountService.getEmailAccountByEmailAddress(emailAddress).isPresent()) {
+            return "redirect:/account";
+        }
+        else
+        {
+            EmailAccount newEmailAccount = new EmailAccount();
+            newEmailAccount.setEmailAddress(emailAddress);
 
-        EmailAccount newEmailAccount= new EmailAccount();
-        newEmailAccount.setEmailAddress(emailAddress);
+            Optional<MasterAccount> optionalMasterAccount = accountService.getMasterAccountByAccountname(principal.getName());
+            optionalMasterAccount.ifPresent(acc -> {
 
+                newEmailAccount.setMasterAccount(acc);
+                acc.getEmailAccounts().add(newEmailAccount);
+                accountService.updateMasterAccount(acc);
 
-        Optional<MasterAccount> optionalMasterAccount= accountService.getMasterAccountByAccountname(principal.getName());
-        optionalMasterAccount.ifPresent( acc -> {
-
-            newEmailAccount.setMasterAccount(acc);
-            acc.getEmailAccounts().add(newEmailAccount);
-            accountService.updateMasterAccount(acc);
-
-        });
-
-
-        return "redirect:/account";
+            });
+            return "redirect:/account";
+        }
     }
-
 
 
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public String creatEmailAccount(
-            @ModelAttribute("emailAccount")EmailAccount emailAccount,
+            @ModelAttribute("emailAccount") EmailAccount emailAccount,
             Principal principal
 
-    )
-    {
+    ) {
 
-        Optional<MasterAccount> optionalMasterAccount=accountService.loadMasterAccountUserByUsername(principal.getName());
+        Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
 
-        //Testing
-        if (optionalMasterAccount.isPresent())
-        {
-            MasterAccount masterAccount=optionalMasterAccount.get();
+        if (optionalMasterAccount.isPresent()) {
+            MasterAccount masterAccount = optionalMasterAccount.get();
             masterAccount.getEmailAccounts().add(emailAccount);
             emailAccount.setMasterAccount(masterAccount);
             accountService.updateMasterAccount(masterAccount);
 
         }
-
         return "redirect:/account";
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

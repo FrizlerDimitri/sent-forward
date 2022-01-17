@@ -56,7 +56,6 @@ public class EmailService implements IEmailService {
         List<EmailAccount> tempTo = (ArrayList<EmailAccount>) email.getTo();
         EmailAccount tempFrom = email.getFrom();
 
-
         Optional<EmailAccount> optionalFrom = accountService.getEmailAccountByEmailAddress(tempFrom.getEmailAddress());
         EmailAccount from = optionalFrom.orElseThrow(() -> new CanNotSentException("E-Mail Address " + tempFrom.getEmailAddress()+" not found"));
 
@@ -97,7 +96,20 @@ public class EmailService implements IEmailService {
         return Optional.of(sEmail);
     }
 
+    @Override
+    public Optional<SavedEmail> saveEmail(SavedEmail email) {
 
+        if(email.getId() != null && getSavedEmailById(email.getId()).isPresent() )
+        {
+            savedEmailRepository.save(email);
+        }else {
+            EmailAccount emailAccount = email.getFrom();
+            emailAccount.getSavedEmails().add(email);
+            accountService.updateEmailAccount(emailAccount);
+        }
+
+        return Optional.of(email);
+    }
 
 
 }

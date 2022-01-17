@@ -9,17 +9,10 @@ import com.oth.sentforward.webapp.dto.SendEmailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 
 @Controller
 public class MailController {
@@ -32,7 +25,6 @@ public class MailController {
 
     @Autowired
     private SentForwardUtilsConfig utilsConfig;
-
 
     //Sent E-mails
 
@@ -94,7 +86,6 @@ public class MailController {
     }
 
 
-
     //Received E-Mails
 
     @RequestMapping(value = "/account/inbox/{emailId}")
@@ -124,9 +115,7 @@ public class MailController {
                 }
             });
             model.addAttribute("sortedEmails", sortedList);
-
         });
-
 
         return "ReceivedEmail";
     }
@@ -160,7 +149,6 @@ public class MailController {
     @RequestMapping(value = "account/saved/{emailAddressId}")
     public String getSavedEmail(Model model, @PathVariable Long emailAddressId, Principal principal)
     {
-
         // For Sidebar
         Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
         optionalMasterAccount.ifPresent(acc -> {
@@ -190,6 +178,86 @@ public class MailController {
 
         return "SavedEmail";
     }
+
+    @RequestMapping(value = "account/saved/{emailAddressId}", method = RequestMethod.POST)
+    public String saveEmailPost(@PathVariable Long emailAddressId, @ModelAttribute SendEmailDto sendEmailDto, @RequestParam(required = false) Long oldId)
+    {
+
+        String to= sendEmailDto.getTo();
+        to=to.replaceAll(";|,"," ");
+        to=to.replaceAll("\\s+"," ");
+        String[] stringArr = to.split(" ");
+        List<String> stringList = new ArrayList<>(Arrays.asList(stringArr));
+
+        String subject = sendEmailDto.getSubject();
+        String content = sendEmailDto.getContent();
+
+        SavedEmail saveEmail=new SavedEmail();
+
+        if(oldId != null)
+        {
+            if(emailService.getSavedEmailById(oldId).isPresent())
+            {
+                saveEmail=emailService.getSavedEmailById(oldId).get();
+            }
+
+        }
+
+        saveEmail.setContent(content);
+        saveEmail.setSubject(subject);
+        saveEmail.setLastModified(new Date());
+
+        List <String> canNotSentTo = new ArrayList<>();
+        for ( String email : stringList )
+        {
+            Optional<EmailAccount> optionalEmailAccount = accountService.getEmailAccountByEmailAddress(email);
+            if (optionalEmailAccount.isPresent())
+            {
+                saveEmail.getTo().add(optionalEmailAccount.get());
+            }else {
+                canNotSentTo.add(email);
+            }
+
+        }
+
+        EmailAccount from =  accountService.getEmailAccountById(emailAddressId).orElse(null);
+        saveEmail.setFrom(from);
+
+
+
+        emailService.saveEmail(saveEmail);
+
+        return "redirect:/account/saved/"+emailAddressId;
+    }
+
+    @RequestMapping(value = "/account/saved/email/{emailId}")
+    public String getSavedEmailDetail(Model model, @PathVariable("emailId") Long emailId, Principal principal)
+    {
+
+        //For Sidebar
+        Optional<MasterAccount> optionalMasterAccount = accountService.loadMasterAccountUserByUsername(principal.getName());
+        optionalMasterAccount.ifPresent(acc -> {
+            model.addAttribute("masterAccount", acc);
+            model.addAttribute("user", acc.getUser());
+        });
+
+
+        model.addAttribute("sentEmailDto", new SendEmailDto());
+        // For Content
+        emailService.getSavedEmailById(emailId).ifPresent( savedEmail ->{
+
+            model.addAttribute( "email",savedEmail);
+
+            SendEmailDto sendEmailDto = new SendEmailDto();
+            sendEmailDto.setContent(savedEmail.getContent());
+            sendEmailDto.setSubject(savedEmail.getSubject());
+            model.addAttribute("emailDTO",sendEmailDto);
+
+        } );
+        return "SavedEmailDetail";
+    }
+
+
 
 
 
@@ -221,7 +289,7 @@ public class MailController {
     }
 
     @RequestMapping(value = "/account/{emailAddressId}/new", method = RequestMethod.POST)
-    public String sendEmailPost(Model model, Principal principal, @PathVariable Long emailAddressId, @ModelAttribute SendEmailDto sendEmailDto)
+    public String sendEmailPost(@PathVariable Long emailAddressId, @ModelAttribute SendEmailDto sendEmailDto)
     {
         String to= sendEmailDto.getTo();
         to=to.replaceAll(";|,"," ");

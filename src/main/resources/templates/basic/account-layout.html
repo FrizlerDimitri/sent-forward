@@ -84,6 +84,16 @@
                                             </li>
 
                                             <li>
+                                                <a th:href="@{'/account/saved/'+${emailAccount.getId()} }">
+                                                    <p class="nav_link-component">
+                                                        <i class="bi bi-save"></i>
+                                                        <span class="nav_name" th:text="Saved"> </span>
+                                                    </p>
+                                                </a>
+
+                                            </li>
+
+                                            <li>
                                                 <a th:href="@{'/account/calendar/'+${emailAccount.getId()} +'/'+${emailAccount.getCalendar().getId()} }">
                                                     <p class="nav_link-component">
                                                         <i class="bi bi-calendar"></i>

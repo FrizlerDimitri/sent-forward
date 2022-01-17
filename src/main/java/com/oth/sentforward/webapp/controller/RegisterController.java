@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 @Controller
 public class RegisterController {
 
@@ -80,7 +81,7 @@ public class RegisterController {
 
         UserEntity user = new UserEntity(lastName, name, address);
 
-        //create masterAccount
+
         MasterAccount masterAccount = new MasterAccount(accountName, pw, user);
         accountService.createMasterAccount(masterAccount);
 

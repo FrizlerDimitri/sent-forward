@@ -17,7 +17,7 @@
     <div th:replace="basic/account-layout :: sidebar"></div>
     <div class="account-content">
 
-        <form method="post" th:object="${newAddressDto}" th:action="@{/account/newEmail}">
+        <form method="post" th:object="${newAddressDto}" th:action="@{/account/newEmail}" autocomplete="off">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Enter a new E-Mail" th:field="*{emailAddress}" required>
                 <div class="input-group-append">
